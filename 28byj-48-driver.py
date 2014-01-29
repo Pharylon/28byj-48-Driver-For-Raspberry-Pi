@@ -28,13 +28,13 @@ GpioPins = [17, 18, 27, 22]
 
 
 for pin in GpioPins:
-    GPIO.setup(pin,GPIO.OUT)
-    GPIO.output(pin, False)
+    GPIO.setup(pin, GPIO.OUT) #Set pin to output
+    GPIO.output(pin, False) #Set pin to low ("False")
 
 
 #These steps are defined in datasheet at
 #http://www.bitsbox.co.uk/data/motor/Stepper.pdf
-#Each step is a list containing GPIO pins that should be set the High
+#Each step is a list containing GPIO pins that should be set to High
 StepSequence = range(0, 8)
 StepSequence[0] = [GpioPins[0]]
 StepSequence[1] = [GpioPins[0], GpioPins[1]]
@@ -51,11 +51,12 @@ if args.counterclockwise:
 	StepSequence.reverse()
 	
 
+#This array is used to make the cursor "spin" while the script is running.
 curserSpin = ["/","-","|","\\","|"]
 spinPosition = 0
 
 
-#Just prints a spinning cursor. Used when --verbose not set to true.
+#Just prints a spinning cursor. Used when --verbose not set to false.
 def PrintCursorSpin():
 	global curserSpin
 	global spinPosition
