@@ -12,9 +12,11 @@ parser.add_argument("-cc", "--counterclockwise", help="Turn stepper counterclock
 parser.add_argument("-v", "--verbose", help="Write pin actions", default=False, action="store_true")
 args = parser.parse_args()
 
+
 #We will be using GPIO pin numbers instead
 #of phyisical pin numbers.
 GPIO.setmode(GPIO.BCM)
+
 
 #These are the four GPIO pins we will
 #use to drive the stepper motor, in the order
@@ -46,17 +48,14 @@ StepSequence[7] = [GpioPins[3], GpioPins[0]]
 
 #if we want the motor to run in "reverse" we flip the sequence order.
 if args.counterclockwise:
-    rev = range(0, 8)
-    revPos = 7
-    for s in StepSequence:
-        rev[revPos] = s
-        revPos -= 1
-    StepSequence = rev
+	StepSequence.reverse()
 	
 
 curserSpin = ["/","-","|","\\","|"]
 spinPosition = 0
 
+
+#Just prints a spinning cursor. Used when --verbose not set to true.
 def PrintCursorSpin():
 	global curserSpin
 	global spinPosition
@@ -65,7 +64,8 @@ def PrintCursorSpin():
 	if spinPosition > 4:
 		spinPosition = 0
 		
-		
+
+#Print status of pins.		
 def PrintStatus(enabledPins):
 	if args.verbose:
 		print "New Step:"
@@ -78,6 +78,7 @@ def PrintStatus(enabledPins):
 		PrintCursorSpin()
 
 
+#The actual magic loop. Iterate through the pins turning them on and off.
 stepsRemaining = args.steps
 while stepsRemaining > 0:
     for pinList in StepSequence:
