@@ -87,7 +87,7 @@ while stepsRemaining > 0:
             if pin in pinList:
 				GPIO.output(pin, True)
             else:
-                GPIO.output(pin, False)
+				GPIO.output(pin, False)
 		PrintStatus(pinList)	
     	time.sleep(args.wait)
     stepsRemaining -= 1
